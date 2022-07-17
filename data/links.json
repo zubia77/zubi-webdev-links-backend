@@ -1,0 +1,45 @@
+[
+    {
+        "title": "MDN",
+        "url": "https://developer.mozilla.org/de/",
+        "img": "../public/images/mdn.png",
+        "description": "MDN Web Docs ist eine Entwickler-Dokumentation der Mozilla Foundation für Web-Technologien, das Offene Web und Mozilla Projekte. Auf der Website sind Web-Technologien wie beispielsweise HTML, CSS, JavaScript und Web-APIs dokumentiert, was dazu beitragen soll, das Offene Web zu fördern.",
+        "genre": "documentation"
+    },
+    {
+        "title": "W3 schools",
+        "url": "https://www.w3schools.com/",
+        "img": "../public/images/w3schools.png",
+        "description": "W3Schools ist eine E-Learning-Webseite mit Tutorials und Hilfestellungen für die Bereiche Webentwicklung und Webdesign.",
+        "genre": "documentation"
+    },
+    {
+        "title": "Coolors",
+        "url": "https://coolors.co/",
+        "img": "../public/images/coolors.png",
+        "description": "Coolors is a super fast color schemes generator for designers.",
+        "genre": "tools"
+    },
+    {
+        "title": "Image Color Picker",
+        "url": "https://imagecolorpicker.com/",
+        "img": "../public/images/imagecolorpicker.png",
+        "description": "Use the online image color picker to select a color and get the HTML Color Code of this pixel. Also you get the HEX color code value, RGB value and HSV value.",
+        "genre": "tools"
+    },
+    {
+        "title": "removebg",
+        "url": "https://www.remove.bg/de",
+        "img": "../public/images/removebg.png",
+        "description": "Foto-Hintergrund entfernen",
+        "genre": "tools"
+    },
+    {
+        "title": "freepik",
+        "url": "https://developer.mozilla.org/de/",
+        "img": "../public/images/freepik.png",
+        "description": "Freepik ist eine Bilddatenbank mit eigener Produktionsfirma, die mehr als 25 Millionen Grafikressourcen anbietet.",
+        "genre": "database"
+    }
+
+]
