@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { Linklist } from "./models/Linklist.js";
 import cors from "cors";
-import jwt from 'jsonwebtoken';
-
+import jwt from "jsonwebtoken";
 
 dotenv.config();
 
@@ -33,9 +32,9 @@ mongoose.connect(MONGODB_URI, (err) => {
 });
 
 const verifyToken = (req, res, next) => {
-    const bearerHeader = req.headers['authorization'];
-    if (typeof bearerHeader !== 'undefined') {
-        const bearer = bearerHeader.split(' ');
+    const bearerHeader = req.headers["authorization"];
+    if (typeof bearerHeader !== "undefined") {
+        const bearer = bearerHeader.split(" ");
         const bearerToken = bearer[1];
         req.token = bearerToken;
         next();
@@ -45,38 +44,39 @@ const verifyToken = (req, res, next) => {
 };
 
 const decodeJwt = (token) => {
-    let base64Url = token.split('.')[1];
-    let base64 = base64Url.replace('-', '+').replace('_', '/');
-    let decodedData = JSON.parse(Buffer.from(base64, 'base64').toString('binary'));
+    let base64Url = token.split(".")[1];
+    let base64 = base64Url.replace("-", "+").replace("_", "/");
+    let decodedData = JSON.parse(
+        Buffer.from(base64, "base64").toString("binary")
+    );
     return decodedData;
-}
+};
 
 app.get("/", (req, res) => {
     res.send("<h1>Zubi Webdev Links</h1>");
 });
 
-app.post('/maintain-login', verifyToken, (req, res) => {
-    jwt.verify(req.token, 'secretkey', (err, authData) => {
+app.post("/maintain-login", verifyToken, (req, res) => {
+    jwt.verify(req.token, "secretkey", (err, authData) => {
         if (err) {
             res.sendStatus(403);
         } else {
             const data = decodeJwt(req.token);
             res.json({
-                user: data.user
+                user: data.user,
             });
         }
     });
 });
 
-
 app.post("/login", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     if (username === "zubi" && password === "123") {
-        jwt.sign({ user }, 'secretkey', { expiresIn: '20s' }, (err, token) => {
+        jwt.sign({ user }, "secretkey", { expiresIn: "20s" }, (err, token) => {
             res.json({
                 user,
-                token
+                token,
             });
         });
     } else {
