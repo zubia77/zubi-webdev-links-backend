@@ -73,7 +73,7 @@ app.post("/login", (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
     if (username === "zubi" && password === "123") {
-        jwt.sign({ user }, "secretkey", { expiresIn: "20s" }, (err, token) => {
+        jwt.sign({ user }, "secretkey", { expiresIn: "1h" }, (err, token) => {
             res.json({
                 user,
                 token,
@@ -88,6 +88,34 @@ app.get("/linklists", async (req, res) => {
     const linkLists = await Linklist.find();
     res.status(200).json(linkLists);
 });
+
+app.post("/linklists", async (req, res) => {
+    const {title, url, description, genre} = req.body.link
+    try {
+        const link = await Linklist.create({title, url, description, genre})
+        res.status(200).json(link)
+    } catch (error) {
+        res.status(400),json({error: error.message})
+    }
+});
+
+app.delete('/linklists:_id', async (req, res) => {
+    const { id } = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({error: 'No such link'})
+}
+
+    const linkList = await Linklist.findOneAndDelete({_id: id})
+
+    if (!linkList) {
+        return res.status(400).json({error: 'No such workout'})
+    }
+
+    res.status(200).json(linkList)
+
+}
+)
 
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}`);
