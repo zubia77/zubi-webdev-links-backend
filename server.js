@@ -2,17 +2,20 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import { Linklist } from "./models/Linklist.js";
+import { User } from "./models/User.js";
 import cors from "cors";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt'
+
 
 dotenv.config();
 
-const user = {
-    id: 1,
-    username: "zubi",
-    firstName: "Zubia",
-    lastName: "Rashid",
-};
+// const user = {
+//     id: 1,
+//     username: "zubi",
+//     firstName: "Zubia",
+//     lastName: "Rashid",
+// };
 
 const app = express();
 app.use(cors());
@@ -69,18 +72,36 @@ app.post("/maintain-login", verifyToken, (req, res) => {
     });
 });
 
-app.post("/login", (req, res) => {
+app.post("/login", async (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
-    if (username === "zubi" && password === "123") {
-        jwt.sign({ user }, "secretkey", { expiresIn: "1h" }, (err, token) => {
-            res.json({
-                user,
-                token,
-            });
-        });
+    const user = await User.findOne({ username });
+
+    if (user === null) {
+        res.status(403).send('user not found')
     } else {
-        res.sendStatus(403);
+        const passwordIsCorrect = await bcrypt.compare(password, user.hash)
+        if (passwordIsCorrect) {
+            const frontendUser= {
+                username: user.username,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                accessGroups: user.accessGroups,
+            };
+            jwt.sign(
+                {user: frontendUser },
+                'secretkey',
+                { expiresIn: '20s' },
+                (err, token) => {
+                    res.json({
+                        user: frontendUser,
+                        token
+                    })
+                }
+            )
+        } else {
+            res.status(403).send('bad password')
+        }
     }
 });
 
